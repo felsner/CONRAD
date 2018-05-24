@@ -70,15 +70,15 @@ public class ParallelBackprojector2D {
 		this.initSinogramParams(sino);
 		Grid2D grid = new Grid2D(this.imgSizeX, this.imgSizeY);
 		grid.setSpacing(this.pxSzXMM, this.pxSzYMM);
-		grid.setOrigin(-(grid.getSize()[0]*grid.getSpacing()[0]) / 2.0, -(grid.getSize()[1]*grid.getSpacing()[1]) / 2.0);
+		grid.setOrigin(-((grid.getSize()[0]-1)*grid.getSpacing()[0]) / 2.0, -((grid.getSize()[1]-1)*grid.getSpacing()[1]) / 2.0);
 
 		// set up image bounding box in WC
 		Translation trans = new Translation(
-				-(grid.getSize()[0] * grid.getSpacing()[0])/2, -(grid.getSize()[1] * grid.getSpacing()[1])/2, -1
+				-((grid.getSize()[0]-1) * grid.getSpacing()[0])/2, -((grid.getSize()[1]-1) * grid.getSpacing()[1])/2, -1
 				);
 		Transform inverse = trans.inverse();
 
-		Box b = new Box((grid.getSize()[0] * grid.getSpacing()[0]), (grid.getSize()[1] * grid.getSpacing()[1]), 2);
+		Box b = new Box(((grid.getSize()[0]) * grid.getSpacing()[0]), ((grid.getSize()[1]) * grid.getSpacing()[1]), 2);
 		b.applyTransform(trans);
 
 		for(int e=0; e<maxThetaIndex; ++e){
@@ -137,7 +137,6 @@ public class ParallelBackprojector2D {
 
 					InterpolationOperators.addInterpolateLinear(grid, x, y, val);
 				}
-
 			}
 		}
 		//		float correctionFactor = (float) ((float) samplingRate * maxThetaIndex / maxTheta * Math.PI);
@@ -157,7 +156,7 @@ public class ParallelBackprojector2D {
 		this.initSinogramParams(sino);
 		Grid2D grid = new Grid2D(this.imgSizeX, this.imgSizeY);
 		grid.setSpacing(pxSzXMM, pxSzYMM);
-		grid.setOrigin(-(grid.getSize()[0]*grid.getSpacing()[0])/2, -(grid.getSize()[1]*grid.getSpacing()[1])/2);
+		grid.setOrigin(-((grid.getSize()[0]-1)*grid.getSpacing()[0])/2, -((grid.getSize()[1]-1)*grid.getSpacing()[1])/2);
 
 		// loop over the projection angles
 		for (int i = 0; i < maxThetaIndex; i++) {

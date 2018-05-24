@@ -7,7 +7,8 @@ package edu.stanford.rsl.conrad.physics.materials.utils;
  */
 public enum AttenuationRetrievalMode {
 	LOCAL_RETRIEVAL,
-	ONLINE_RETRIEVAL;
+	ONLINE_RETRIEVAL,
+	PHASE_RETRIEVAL; // Lina Felsner 22.02.2018
 }
 /*
  * Copyright (C) 2010-2014 Rotimi X Ojo

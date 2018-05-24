@@ -167,6 +167,10 @@ public class XRayDetector extends PhysicalObject implements GUIConfigurable, Ser
 	public void writeToDetector(Grid2D grid, int x, int y, ArrayList<PhysicalObject> segments){
 		grid.putPixelValue(x, y, model.evaluateLineIntegral(segments));
 	}
+	
+	public void writePhaseToDetector(Grid2D grid, int x, int y, ArrayList<PhysicalObject> segments){
+		grid.putPixelValue(x, y, model.evaluatePhaseIntegral(segments));
+	}
 
 	@Override
 	public void configure() throws Exception {

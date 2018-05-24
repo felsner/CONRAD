@@ -347,6 +347,8 @@ public abstract class RegKeys {
 		defaultValues.put(ED_PHANTOM_BONE_RING, "false");
 		defaultValues.put(ED_PHANTOM_CENTERAL_BUFFER_DIAMETER, "15");
 		defaultValues.put(CONRAD_WINDOW_DEFAULT_LOCATION, "[0,0]");
+		defaultValues.put(ED_PHANTOM_INSERT_1_BUFFER_DIAMETER, "2");
+		
 	}
 	
 }

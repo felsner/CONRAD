@@ -433,7 +433,8 @@ public class ConeBeamProjector {
 
 	public void projectRayDrivenCL(OpenCLGrid2D sinoCL, OpenCLGrid3D gridCL, int projIdx){
 		
-		imageGrid = context.createImage3d(gridCL.getDelegate().getCLBuffer().getBuffer(), (int)gridCL.getSize()[0], (int)gridCL.getSize()[1], (int)gridCL.getSize()[2],format, Mem.READ_ONLY);
+		imageGrid = context.createImage3d(gridCL.getDelegate().getCLBuffer().getBuffer(), 
+				(int)gridCL.getSize()[0], (int)gridCL.getSize()[1], (int)gridCL.getSize()[2], format, Mem.READ_ONLY);
 
 		queue
 		.putCopyBufferToImage(gridCL.getDelegate().getCLBuffer(), imageGrid)
@@ -453,10 +454,12 @@ public class ConeBeamProjector {
 		.putArg(projIdx);
 	
 		queue
-		.put2DRangeKernel(kernelFunction, 0, 0, globalWorkSizeU, globalWorkSizeV,localWorkSize, localWorkSize).finish();
+		.put2DRangeKernel(kernelFunction, 0, 0, globalWorkSizeU, globalWorkSizeV,localWorkSize, localWorkSize)
+		.finish();
 
 		kernelFunction.rewind();
 		sinoCL.getDelegate().notifyDeviceChange();
+		
 	}
 
 	public Grid2D projectRayDrivenCL(Grid3D grid, int projIdx) throws Exception {
@@ -471,7 +474,9 @@ public class ConeBeamProjector {
 		gridCL.release();
 
 		Grid2D sino = new Grid2D(sinoCL);
+		sinoCL.release();
 		unload();
+		
 		return sino;
 	}
 	

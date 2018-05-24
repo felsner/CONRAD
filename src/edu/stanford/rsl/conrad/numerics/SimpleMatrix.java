@@ -182,11 +182,25 @@ public class SimpleMatrix implements Serializable {
 		return array; 
 	}
 	
+	public float[][] copyAsFloatArray(){
+		float[][] array = new float[this.rows][this.cols];
+		this.copyTo(array);
+		return array; 
+	}
+	
 	/**
 	 * Copy matrix entries to supplied 2x2 double array
 	 * @param otherBuffer is 2x2 double array to be populated with matrix entries
 	 */
 	public void copyTo(final double[][] otherBuffer) {
+		assert (this.rows == otherBuffer.length) : new IllegalArgumentException("Copying is only possible to an array of the same size!");
+		for (int r = 0; r < this.rows; ++r) {
+			assert (otherBuffer[r].length == this.cols) : new RuntimeException("Given array is not rectangular!");
+			System.arraycopy(this.buf[r], 0, otherBuffer[r], 0, this.cols);
+		}
+	}
+	
+	public void copyTo(final float[][] otherBuffer) {
 		assert (this.rows == otherBuffer.length) : new IllegalArgumentException("Copying is only possible to an array of the same size!");
 		for (int r = 0; r < this.rows; ++r) {
 			assert (otherBuffer[r].length == this.cols) : new RuntimeException("Given array is not rectangular!");

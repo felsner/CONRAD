@@ -98,37 +98,33 @@ public class Grid2D extends NumericGrid implements Transformable {
 	}
 	
 
-	@Deprecated
-	/**
-	 * Set the corresponding Grid1D object on the linear 2D row memory
-	 * 
-	 * CAUTION: We set absolute values and no references.
-	 * If the input Grid1D subGrid is changed at a later point,
-	 * it won't change the values in the Grid2D.
-	 * This is due to "float buffer" nature of Grid2D,
-	 * which is a fundamental difference to the structure of Grid3D,
-	 * which is defined by an ArrayList of Grid2Ds.
-	 * 
-	 * You can do a little workaround, when adding the following code:
-	 * 
-	 * myGrid2D.setSubgrid(j, Grid1D myGrid1D);
-	 * myGrid1D = myGrid2D.getSubGrid(j);
-	 *
-	 * This code is deprecated since no final solution was found 
-	 * to solve the prior mentioned problem.
-	 * 
-	 * @param j The row-index (y-index, height-index)
-	 * @param subGrid
-	 */
-	public void setSubGrid(int j, Grid1D subGrid) {
-		
-        for (int i=0; i<subGrid.getSize()[0]; ++i) {
-            setAtIndex(j, i, subGrid.getAtIndex(i));
-        }
+	 /**
+     * Set the corresponding Grid1D object on the linear 2D row memory
+     *
+     * We set absolute values and no references.
+     * 
+     * 	If the input Grid1D subGrid is changed at a later point,
+     * 	it won't change the values in the Grid2D.
+     * 	This is due to "float buffer" nature of Grid2D,
+     * 	which is a fundamental difference to the structure of Grid3D,
+     * 	which is defined by an ArrayList of Grid2Ds.
+     *
+     * 	You can do a little workaround, when adding the following code:
+     * 	myGrid2D.setSubgrid(j, Grid1D myGrid1D);
+     * 	myGrid1D = myGrid2D.getSubGrid(j);
+     *
+     *
+     * @param j The row-index (y-index, height-index)
+     * @param subGrid
+     */
+    public void setSubGrid(int j, Grid1D subGrid) {
+      
+        // Update the buffer (automatically sets the subGrid as well)
+        System.arraycopy(subGrid.getBuffer(), 0, this.buffer, this.columnOffsets[j],
+        subGrid.getBuffer().length);
        
-        
         notifyAfterWrite();
-	}
+    }
 	
 	public double[] indexToPhysical(double i, double j) {
 		return new double[] {
@@ -148,13 +144,11 @@ public class Grid2D extends NumericGrid implements Transformable {
 	
 	public float getAtIndex(int i, int j) {
 		notifyBeforeRead();
-		//FIXME (maybe use getPixelValue instead)
 		return this.getPixelValue(i, j);
 	}
 	
 	
 	public void setAtIndex(int i, int j, float val) {
-		//FIXME (maybe use putPixelValue instead)
 		 this.putPixelValue(i, j, val);
 		 notifyAfterWrite();
 	}

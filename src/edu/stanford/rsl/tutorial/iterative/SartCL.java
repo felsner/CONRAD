@@ -25,7 +25,7 @@ import edu.stanford.rsl.tutorial.cone.ConeBeamProjector;
 public class SartCL implements Sart{
 
 	//debug
-	boolean debug = false;
+	boolean debug = true;
 
 	// controll structures
 	protected CLContext context = null;
@@ -92,11 +92,15 @@ public class SartCL implements Sart{
 		volCL.setOrigin(origin);
 		volCL.setSpacing(spacing);
 
+		System.out.println("1");
+		
 		cbp = new ConeBeamProjector();
 		cbbp = new ConeBeamBackprojector();
 
 		this.normSino = createNormProj();
 		this.normGrid = createNormGrid();
+		
+		System.out.println("2");
 		
 		this.oProj = new OpenCLGrid3D(oProj);
 		this.oProj.getDelegate().prepareForDeviceOperation();
@@ -106,19 +110,28 @@ public class SartCL implements Sart{
 
 		this.beta = beta;
 		
+		System.out.println("3");
+		
 		sinoCL = new OpenCLGrid2D(new Grid2D(width,height));
 		sinoCL.setSpacing(geo.getPixelDimensionX(),geo.getPixelDimensionY());
+		
+		System.out.println("4");
 		
 		updBP = new OpenCLGrid3D(new Grid3D(imgSize[0],imgSize[1],imgSize[2]));
 		updBP.setOrigin(-origin[0], -origin[1], -origin[2]);
 		updBP.setSpacing(spacing[0], spacing[1], spacing[2]);
 
+		System.out.println("5"); 
+		
 		oProjP = new OpenCLGrid2D[maxProjs];
 		normSinoP = new OpenCLGrid2D[maxProjs];
 
+		System.out.println("6");
+		
 		for (int j= 0; j< maxProjs; ++j){
 			oProjP[j] = new OpenCLGrid2D(oProj.getSubGrid(j));
-			normSinoP[j] 	= new OpenCLGrid2D(normSino.getSubGrid(j));
+			normSinoP[j] 	= new OpenCLGrid2D(this.normSino.getSubGrid(j));
+			if(j%100 == 0)	System.out.println("iteration " + j);
 		}
 	}
 
@@ -292,8 +305,8 @@ public class SartCL implements Sart{
 	}
 
 	public static void main(String[] args) throws Exception {
-		boolean helix = false;
-		int iterations = 2;
+		boolean helix = true;
+		int iterations = 10;
 		
 		Configuration.loadConfiguration();
 		Configuration conf = Configuration.getGlobalConfiguration();
@@ -302,14 +315,16 @@ public class SartCL implements Sart{
 		if(helix){
 			traj = new HelicalTrajectory(Configuration.getGlobalConfiguration().getGeometry());
 		
+			int magic_number = 5; //num rot? 3
+			double second_magic_number = 0.4; // detector pitch 0.05, dann 0.5
 			// set chosen trajectory
 			int stepHel =traj.getNumProjectionMatrices();
 			double physicalDetectorHeight = traj.getDetectorHeight()*traj.getPixelDimensionY();
-			double stepSize = (physicalDetectorHeight*0.05 / (((double)stepHel)));
-			double volumeZSize = physicalDetectorHeight*3*0.05;
+			double stepSize = (physicalDetectorHeight*second_magic_number / (((double)stepHel)));
+			double volumeZSize = physicalDetectorHeight*magic_number*second_magic_number;
 			//set chosen trajectory
 		
-			((HelicalTrajectory) traj).setTrajectory( 	stepHel*3, Configuration.getGlobalConfiguration().getGeometry().getSourceToAxisDistance(), traj.getAverageAngularIncrement(), 
+			((HelicalTrajectory) traj).setTrajectory( 	stepHel*magic_number, Configuration.getGlobalConfiguration().getGeometry().getSourceToAxisDistance(), traj.getAverageAngularIncrement(), 
 														traj.getDetectorOffsetU(), traj.getDetectorOffsetV(), 
 														traj.getDetectorUDirection(), traj.getDetectorVDirection(),
 														new SimpleVector(0,0,1), new PointND(0,0,volumeZSize / 2), 0, stepSize);
@@ -323,12 +338,15 @@ public class SartCL implements Sart{
 		
 		grid.setOrigin(-traj.getOriginInPixelsX(),-traj.getOriginInPixelsY(),-traj.getOriginInPixelsZ());
 		grid.setSpacing(traj.getVoxelSpacingX(),traj.getVoxelSpacingY(),traj.getVoxelSpacingZ());
+		grid.show("grid");
 		System.out.println("GT: "+grid.getGridOperator().normL1(grid));
 		try {
+			System.out.println("Stack Size: " + traj.getProjectionStackSize());
 			OpenCLGrid3D sino = new OpenCLGrid3D(new Grid3D(traj.getDetectorWidth(),traj.getDetectorHeight(),traj.getProjectionStackSize()));
 			sino.setOrigin(0,0,0);
 			sino.setSpacing(1,1,1);
 			cbp.fastProjectRayDrivenCL(sino,grid);
+			sino.show("sino");
 
 			SartCL sart = new SartCL(grid.getSize(),grid.getSpacing(),grid.getOrigin(), sino, 0.8f);
 			long start = System.currentTimeMillis();

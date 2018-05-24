@@ -31,7 +31,8 @@ public class ParallelReconExample {
 		
 		// Project forward parallel
 		ParallelProjector2D projector = new ParallelProjector2D(Math.PI, Math.PI/180.0, 400, 1);
-		Grid2D sinogram = projector.projectRayDrivenCL(phan);
+		//Grid2D sinogram = projector.projectRayDrivenCL(phan);
+		Grid2D sinogram = projector.projectRayDriven(phan);
 		sinogram.show("The Sinogram");
 		Grid2D filteredSinogram = new Grid2D(sinogram);
 		

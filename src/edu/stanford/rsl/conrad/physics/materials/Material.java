@@ -12,6 +12,7 @@ import edu.stanford.rsl.conrad.physics.materials.utils.AttenuationType;
 import edu.stanford.rsl.conrad.physics.materials.utils.LocalMassAttenuationCalculator;
 import edu.stanford.rsl.conrad.physics.materials.utils.WeightedAtomicComposition;
 
+import edu.stanford.rsl.conrad.physics.materials.utils.LocalPhaseShiftCalculator;; // by Lina felsner 22.02.2018
 /**
  * <p>This class models an arbitrary material. Materials are defined by density and their characteristic attenuation of XRays of different energies.</p>
  * <p> Note. A material without a defined energy dependent attenuation cannot be used in polychromatic XRay projection modeling</p>.
@@ -80,6 +81,11 @@ public class Material implements Serializable, Cloneable{
 		return getAttenuation(energy, attType, AttenuationRetrievalMode.LOCAL_RETRIEVAL);
 	}
 	
+	// Lina Felsner 22.02.2018
+	public double getPhase(double energy, AttenuationType attType) {
+		return getAttenuation(energy, attType, AttenuationRetrievalMode.PHASE_RETRIEVAL);
+	}
+	
 	/**
 	 * Retrieve the energy dependent attenuation of material. 
 	 * @param energy is energy of interest in KeV
@@ -93,6 +99,8 @@ public class Material implements Serializable, Cloneable{
 	public double getAttenuation(double energy, AttenuationType attType, AttenuationRetrievalMode mode){		
 		if(mode.equals(AttenuationRetrievalMode.ONLINE_RETRIEVAL)){
 			return density * OnlineMassAttenuationDB.getMassAttenuationData(comp, energy/1000, attType);
+		}else if(mode.equals(AttenuationRetrievalMode.PHASE_RETRIEVAL)){ // Lina Felsner 22.02.2018
+				return LocalPhaseShiftCalculator.getDeltaValues(this.name, comp, energy/1000, attType, density);
 		}else{
 			return density * LocalMassAttenuationCalculator.getMassAttenuationData(comp, energy/1000, attType);
 		}

@@ -56,6 +56,8 @@ public class SimulateXRayDetector extends IndividualImageFilteringTool {
 	public Grid2D applyToolToImage(Grid2D imageProcessor) throws Exception {
 		Grid2D result = imageProcessor;
 		XRayDetector model = Configuration.getGlobalConfiguration().getDetector();
+		boolean phase = false; // Lina Felsner 22.02.2018
+		
 		if (imageProcessor instanceof MultiChannelGrid2D){
 			MultiChannelGrid2D multiChannelGrid2D = (MultiChannelGrid2D) imageProcessor;
 			result = model.createDetectorGrid(multiChannelGrid2D.getWidth(), multiChannelGrid2D.getHeight());
@@ -71,6 +73,14 @@ public class SimulateXRayDetector extends IndividualImageFilteringTool {
 					double density = Double.parseDouble(number[0]);
 					materials[c].setDensity(density);
 					materials[c].setName(name);
+				}else if(name.contains("phase")) {
+					String[] words;
+					if(name.contains("_"))
+						words = name.split("_");
+					else words = name.split("\\s");
+					name = words[0];
+					phase = true; //one phase material is enought to evlaluate the phase. (Ausweg zurück zur Attenuation in LocalPhaseShiftCalculator)
+					materials[c] = MaterialsDB.getMaterial(name);
 				} else {
 					// Normal materials.
 					materials[c] = MaterialsDB.getMaterial(name);
@@ -85,7 +95,11 @@ public class SimulateXRayDetector extends IndividualImageFilteringTool {
 					for (int c=0; c<materials.length; c++){
 						segments.get(c).setShape(new Edge(new PointND(0), new PointND(multiChannelGrid2D.getPixelValue(i, j, c))));
 					}
-					model.writeToDetector(result, i, j, segments);
+					if(phase){
+						model.writePhaseToDetector(result, i, j, segments);
+					}else {
+						model.writeToDetector(result, i, j, segments);
+					}
 				}
 			}
 		} else {

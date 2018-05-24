@@ -263,6 +263,10 @@ public class RingArtifactCorrector {
 		Grid2D res = (Grid2D) polarInput.clone();
 		int width = polarInput.getWidth();
 		int height = polarInput.getHeight();
+		if(polarInput.getSize() != artifacts.getSize()){ // Lina Felsner 22.12.2017
+			System.out.println("Attention Dimensions of polarInput and artifacts do not match. No Image subtraction possible.");
+			return res;
+		}
 		for (int x=0; x<width; x++) {
 			for (int y=0; y<height; y++) {
 				float diff = polarInput.getPixelValue(x, y) - artifacts.getPixelValue(x, y);

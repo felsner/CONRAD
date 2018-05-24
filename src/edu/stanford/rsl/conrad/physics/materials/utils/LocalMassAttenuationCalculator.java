@@ -95,7 +95,7 @@ public class LocalMassAttenuationCalculator {
 		return value;
 	}
 
-	private static SimpleVector getNormalizedComposition(WeightedAtomicComposition comp) {
+	static SimpleVector getNormalizedComposition(WeightedAtomicComposition comp) {
 		SimpleVector vec = new SimpleVector(comp.size());
 		Iterator<Double> it = comp.valuesIterator();
 		int i =0;

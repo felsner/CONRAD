@@ -84,6 +84,8 @@ public class ParallelProjector2D {
 
 		Box b = new Box((grid.getSize()[0] * grid.getSpacing()[0]), (grid.getSize()[1] * grid.getSpacing()[1]), 2);
 		b.applyTransform(trans);
+		
+		
 
 		for(int e=0; e<maxThetaIndex; ++e){
 			// compute theta [rad] and angular functions.

@@ -97,7 +97,7 @@ public class ReconstructionPipelineFrame extends JFrame implements ActionListene
 
 		// Load the sound file and setup playback
 		if (Configuration.getGlobalConfiguration().getRegistry().get(RegKeys.SOUND_FILE) != null) {
-			String name = Configuration.getGlobalConfiguration().getRegistry().get(RegKeys.SOUND_FILE);
+			String name = Configuration.getGlobalConfiguration().getRegistry().get(RegKeys.SOUND_FILE).toString();
 			if (name.isEmpty())
 				return;
 

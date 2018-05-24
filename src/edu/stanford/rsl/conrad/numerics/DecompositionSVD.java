@@ -97,15 +97,18 @@ public class DecompositionSVD implements java.io.Serializable {
 		double[][] A = Arg.copyAsDoubleArray();
 		m = Arg.getRows();
 		n = Arg.getCols();
+		System.out.println("rows " + m + " cols " + n);
 		this.thin = thin;
 
 		ncu = thin?Math.min(m,n):m;
+		System.out.println("ncu " + ncu);
 		s = new double [Math.min(m+1,n)];
+		System.out.println("s " + s);
 		if (wantu) U = new double [m][ncu];
 		if (wantv) V = new double [n][n];
 		double[] e = new double [n];
 		double[] work = new double [m];
-
+		
 		// Reduce A to bidiagonal form, storing the diagonal elements
 		// in s and the super-diagonal elements in e.
 
@@ -211,7 +214,7 @@ public class DecompositionSVD implements java.io.Serializable {
 				}
 			}
 		}
-
+		
 		// Set up the final bidiagonal matrix or order p.
 		int p = Math.min(n,m+1);
 		if (nct < n) {
@@ -502,6 +505,7 @@ public class DecompositionSVD implements java.io.Serializable {
 			break;
 			}
 		}
+		
 		A = null;
 	}
 

@@ -66,7 +66,7 @@ public class SevenBeadPhantom extends AnalyticPhantom {
 		Cylinder s = new Cylinder(cylRadius, cylRadius, cylHeight);
 		s.setName("Water Cylinder");
 		PhysicalObject po = new PhysicalObject();
-		po.setMaterial(MaterialsDB.getMaterialWithName("Water")); // D = 1.95
+		po.setMaterial(MaterialsDB.getMaterialWithName("vacuum")); // D = 1.95
 		po.setShape(s);
 		add(po);
 		
@@ -80,7 +80,8 @@ public class SevenBeadPhantom extends AnalyticPhantom {
 		Sphere sp = new Sphere(beadRadius, center);
 		sp.setName("High Constrast Bead");
 		po = new PhysicalObject();
-		po.setMaterial(MaterialsDB.getMaterialWithName("Plexiglass")); // D = 1.95
+//		po.setMaterial(MaterialsDB.getMaterialWithName("Plexiglass")); // D = 1.95
+		po.setMaterial(MaterialsDB.getMaterialWithName("PVC")); // D = 1.95
 		po.setShape(sp);
 		add(po);
 
@@ -89,7 +90,8 @@ public class SevenBeadPhantom extends AnalyticPhantom {
 		sp = new Sphere(beadRadius, center);
 		sp.setName("High Constrast Bead");
 		po = new PhysicalObject();
-		po.setMaterial(MaterialsDB.getMaterialWithName("Plexiglass")); // D = 1.95
+//		po.setMaterial(MaterialsDB.getMaterialWithName("Plexiglass")); // D = 1.95
+		po.setMaterial(MaterialsDB.getMaterialWithName("PTFE")); // D = 1.95
 		po.setShape(sp);
 		add(po);
 
@@ -98,7 +100,7 @@ public class SevenBeadPhantom extends AnalyticPhantom {
 		sp = new Sphere(beadRadius, center);
 		sp.setName("High Constrast Bead");
 		po = new PhysicalObject();
-		po.setMaterial(MaterialsDB.getMaterialWithName("Plexiglass")); // D = 1.95
+		po.setMaterial(MaterialsDB.getMaterialWithName("water")); // D = 1.95
 		po.setShape(sp);
 		add(po);
 

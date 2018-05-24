@@ -59,5 +59,11 @@ public class DensityAbsorptionModel extends AbsorptionModel {
 	public boolean isConfigured() {
 		return true;
 	}
+
+	@Override
+	public double evaluatePhaseIntegral(ArrayList<PhysicalObject> segments) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

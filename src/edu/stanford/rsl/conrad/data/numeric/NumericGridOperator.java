@@ -78,6 +78,21 @@ public class NumericGridOperator {
 		}
 		return (float) res;
 	}
+	
+	/** Get l2 norm of all grid elements */
+	public float normL2(final NumericGrid grid) {
+		float res = 0;
+		NumericPointwiseIteratorND it = new NumericPointwiseIteratorND(grid);
+		while (it.hasNext()) {
+			float val = it.getNext();
+			if (!(Double.isInfinite(val) || Double.isNaN(val))) {
+				res += val * val;
+			}
+		}
+		
+		res  = (float) Math.sqrt(res);
+		return res;
+	}
 
 	/** Get number of grid elements with negative values 
 	 *  but it doesnt count if negative infinity?!

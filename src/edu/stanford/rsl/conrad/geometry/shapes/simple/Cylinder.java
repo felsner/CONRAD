@@ -36,6 +36,10 @@ public class Cylinder extends QuadricSurface {
 	public Cylinder(double dx, double dy, double dz){
 		init(dx, dy, dz, null);
 	}
+	
+	public Cylinder(double dxy, double dz, PointND surfaceOrigin){ //Lina Felsner 21.1.2018
+		init(dxy, dz, surfaceOrigin);
+	}
 
 	public Cylinder(Cylinder fc) {
 		super(fc);
@@ -69,6 +73,29 @@ public class Cylinder extends QuadricSurface {
 		this.max = new PointND(dx, dy, dz/2);
 		//this.max = this.transform.transform(this.max);
 	}
+	
+	protected void init(double dxy, double dz, PointND surfaceOrigin){ //Lina Felsner 21.1.2018
+		SimpleMatrix mat = new SimpleMatrix(3,3);
+		mat.identity();
+		transform = new AffineTransform(mat, surfaceOrigin.getAbstractVector());
+		
+		this.dx = dxy;
+		this.dy = dxy;
+		this.dz = dz;
+		Plane3D top = new Plane3D(new PointND(surfaceOrigin.get(0),surfaceOrigin.get(1) ,surfaceOrigin.get(2) + dz/2), new SimpleVector(0,0,-1));
+		Plane3D but = new Plane3D(new PointND(surfaceOrigin.get(0),surfaceOrigin.get(1) ,surfaceOrigin.get(2) - dz/2), new SimpleVector(0,0,1));	
+		addBoundingCondition(new HalfSpaceBoundingCondition(top));
+		addBoundingCondition(new HalfSpaceBoundingCondition(but));
+		
+		double constArray[][] = {{1/(dxy*dxy),0,0},{0,1/(dxy*dxy),0},{0,0,0}};
+		super.constMatrix = new SimpleMatrix(constArray);
+		super.constant = 1;		
+		
+		this.max = new PointND(surfaceOrigin.get(0) + dxy, surfaceOrigin.get(1) + dxy, surfaceOrigin.get(2) + dz/2);
+		this.min = new PointND(surfaceOrigin.get(0) - dxy, surfaceOrigin.get(1) - dxy, surfaceOrigin.get(2) - dz/2);
+
+	}
+
 
 	@Override
 	public ArrayList<PointND> getHits (AbstractCurve other){

@@ -54,6 +54,8 @@ public class ConeBeamBackprojector {
 	private double originY;
 	private double originZ;
 	
+	private CLImage2d<FloatBuffer> sinoGrid = null;
+	
 	//cl variables
 	private CLContext context;
 	private CLDevice device;
@@ -305,31 +307,43 @@ public class ConeBeamBackprojector {
 	public void backprojectPixelDrivenCL(OpenCLGrid3D volume, OpenCLGrid2D sino, int projIdx) {
 
 		//TODO MOEGLICHE FEHLERQUELLE
-		CLImage2d<FloatBuffer> sinoGrid = context.createImage2d(sino.getDelegate().getCLBuffer().getBuffer(), sino.getSize()[0], sino.getSize()[1],format,Mem.READ_ONLY);
+		sinoGrid = context.createImage2d(sino.getDelegate().getCLBuffer().getBuffer(), 
+				(int)sino.getSize()[0], (int)sino.getSize()[1], format, Mem.READ_ONLY);
 
-		kernel.putArg(sinoGrid)
+		queue
+		.putCopyBufferToImage(sino.getDelegate().getCLBuffer(), sinoGrid)
+		.finish();
+
+		kernel
+		.putArg(sinoGrid)
 		.putArg(volume.getDelegate().getCLBuffer())
 		.putArg(projMatrices)
 		.putArg(projIdx)
-		.putArg(imgSizeX).putArg(imgSizeY).putArg(imgSizeZ)
-		.putArg((float)originX).putArg((float)originY).putArg((float)originZ)
-		.putArg((float)spacingX).putArg((float)spacingY).putArg((float)spacingZ)
+		.putArg(imgSizeX)
+		.putArg(imgSizeY)
+		.putArg(imgSizeZ)
+		.putArg((float)originX)
+		.putArg((float)originY)
+		.putArg((float)originZ)
+		.putArg((float)spacingX)
+		.putArg((float)spacingY)
+		.putArg((float)spacingZ)
 		.putArg(normalizer); 
-
+		
 		queue
-		.putCopyBufferToImage(sino.getDelegate().getCLBuffer(), sinoGrid).finish()
 		.put2DRangeKernel(kernel, 0, 0, globalWorkSizeX, globalWorkSizeY,localWorkSize, localWorkSize)
 		.finish();
 
 		kernel.rewind();
 		
 		volume.getDelegate().notifyDeviceChange();
+	
 		sinoGrid.release();
 
 	}
 
 	public void fastBackprojectPixelDrivenCL(OpenCLGrid2D sinoCL, OpenCLGrid3D gridCL, int projIdx) {
-		configure();
+	//	configure();
 		
 		gridCL.getDelegate().prepareForDeviceOperation();
 		sinoCL.getDelegate().prepareForDeviceOperation();
@@ -340,7 +354,7 @@ public class ConeBeamBackprojector {
 	
 	public void fastBackprojectPixelDrivenCL(OpenCLGrid3D sinoCL, OpenCLGrid3D gridCL) {
 
-		configure();
+	//	configure();
 
 		gridCL.getDelegate().prepareForDeviceOperation();
 		sinoCL.getDelegate().prepareForDeviceOperation();

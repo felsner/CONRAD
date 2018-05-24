@@ -54,6 +54,27 @@ public class SelectableEnergyMonochromaticAbsorptionModel extends
 					// --> sum/10.0;
 		return  sum / 10;
 	}
+	
+	@Override
+	public double evaluatePhaseIntegral(ArrayList<PhysicalObject> segments) { //Lina Felsner 22.02.2018
+		//outputSpectrum = new PolychromaticXRaySpectrum();
+		double sum = 0;
+		for (PhysicalObject o: segments){			
+			double att = o.getMaterial().getPhase(energy,AttenuationType.TOTAL_WITH_COHERENT_ATTENUATION);
+			double len = ((Edge)o.getShape()).getLength();
+			sum +=  att * len;
+		}
+		
+		if(sum < 0) sum = 0;
+
+			// Normalization is never considered in the backprojectors, 
+			// 		 thus, iteratively applying forward and backward projections
+			//		 would yield to a scaling issue!
+		
+		// Therefore we scale with *2 (Lina Felsner 27.02.2018)
+		return  sum*2;
+	}
+	
 
 	@Override
 	public String toString() {

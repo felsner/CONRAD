@@ -89,6 +89,10 @@ public abstract class AnalyticPhantom extends PrioritizableScene implements Cite
 	public void configure() throws Exception{
 		configured = true;
 	}
+	
+	public void configure(double xRayEnergy) throws Exception{ // Lina Felsner 14.02.2018
+		configured = true;
+	}
 
 	@Override
 	public String toString(){
@@ -156,4 +160,6 @@ public abstract class AnalyticPhantom extends PrioritizableScene implements Cite
 		}
 		return phantom;
 	}
+
+
 }

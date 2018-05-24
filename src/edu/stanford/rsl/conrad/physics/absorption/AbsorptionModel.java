@@ -34,6 +34,8 @@ public abstract class AbsorptionModel implements GUIConfigurable, Serializable {
 	 * @return the integral value
 	 */
 	public abstract double evaluateLineIntegral(ArrayList<PhysicalObject> segments);		
+	
+	public abstract double evaluatePhaseIntegral(ArrayList<PhysicalObject> segments);	// Lina Felsner 22.02.2018
 
 	@Override
 	public abstract String toString();

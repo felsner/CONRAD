@@ -233,4 +233,10 @@ public class PolychromaticAbsorptionModel extends AbsorptionModel {
 		return result;
 	}
 
+	@Override
+	public double evaluatePhaseIntegral(ArrayList<PhysicalObject> segments) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

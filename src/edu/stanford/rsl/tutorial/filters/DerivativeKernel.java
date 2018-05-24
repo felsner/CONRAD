@@ -1,6 +1,7 @@
 package edu.stanford.rsl.tutorial.filters;
 
 import edu.stanford.rsl.conrad.data.numeric.Grid1D;
+import edu.stanford.rsl.conrad.data.numeric.NumericPointwiseOperators;
 import edu.stanford.rsl.conrad.utils.VisualizationUtil;
 import ij.plugin.filter.Convolver;
 import ij.process.FloatProcessor;
@@ -17,17 +18,21 @@ public class DerivativeKernel implements GridKernel {
 	
 	private Grid1D dKernel;
 	public DerivativeKernel() {
-		// TODO Auto-generated constructor stub
-		dKernel = new Grid1D(new float[2]);
-		dKernel.setAtIndex(0, -1.f);
-		dKernel.setAtIndex(1, 1.f);
+		dKernel = new Grid1D(new float[3]);
+		
+		dKernel.setAtIndex(0, 0.f);// fix by Lina Felsner. Convention: add sample at the beginning
+		dKernel.setAtIndex(1, -1.f);
+		dKernel.setAtIndex(2, 1.f); 
+		// convolveFloat expects an odd kernel size
+		
 	}
 
 	public void applyToGrid(Grid1D input) {
 		float[] inputFloat = input.getBuffer();
 		ImageProcessor ip = new FloatProcessor(inputFloat.length, 1, inputFloat);
 		Convolver c = new Convolver();
-		c.convolveFloat(ip, dKernel.getBuffer(), 2, 1);
+		c.convolveFloat((FloatProcessor) ip, dKernel.getBuffer(), 3, 1);
+		NumericPointwiseOperators.copy(input, new Grid1D(inputFloat));
 	}
 
 	/**

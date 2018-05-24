@@ -212,4 +212,10 @@ public class PathLengthHistogramCreatingAbsorptionModel extends AbsorptionModel 
 		this.configured = configured;
 	}
 
+	@Override
+	public double evaluatePhaseIntegral(ArrayList<PhysicalObject> segments) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
