@@ -62,9 +62,45 @@ public class LocalPhaseShiftCalculator {
 		    	break;
 			}
 			
-		} else {
-			delta = density * LocalMassAttenuationCalculator.getMassAttenuationData(comp, energy, attType);
+		} 
+		
+		// forbild
+		//TODO change phase values to true (or more realistic phase values)
+		switch (name.toLowerCase()) {
+			case "bone":
+				delta = 3.96E-08;
+				break;
+		    case "brain":
+		    	delta = 4.43E-08;
+		    	break;
+		    case "lymph":
+		    	delta = 6.52E-08;
+		    	break;
+			case "air":
+				delta = 3.96E-08;
+				break;
+		    case "blood":
+		    	delta = 5E-08; //
+		    	break;
+		    case "brainup":
+		    	delta = 6.52E-08;
+		    	break;
+		    case "braindown":
+		    	delta = 6.52E-08;
+		    	break;
+		    case "hematoma":
+		    	delta = 6.52E-08;
+		    	break;
+		    default: 
+		    	//System.out.println("warning! phase values are not known. Use Attenuation values...");
+		    	delta = density * LocalMassAttenuationCalculator.getMassAttenuationData(comp, energy, attType);
+		    	break;
 		}
+	    
+	    	
+	    if(delta == 0)
+	    	delta = density * LocalMassAttenuationCalculator.getMassAttenuationData(comp, energy, attType);
+			
 		
 		return delta;
 	}

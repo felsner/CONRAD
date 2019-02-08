@@ -8,12 +8,14 @@ public class GDTest {
 
 	private static int GD_STEPSIZE_MAXITER = 20;
 	private static float STEPSIZE_FACTOR = 0.9f;
+	
+	private static boolean debug = true;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int iter = 60;
+		int iter = 3; //60;
 		float stepsize = 0.3f;
 		float regul = (float) Math.pow(10, -4);
 		int size = 100;
@@ -44,12 +46,15 @@ public class GDTest {
 
 	private static Grid3D iterateGradientDescent(Grid3D myVolIn, int iter, float stepsize, float regul) throws Exception {
 
-		boolean reduceStepsizeAndUpdate = false;
+		boolean reduceStepsizeAndUpdate = true;
 		Grid3D myVol = new Grid3D(myVolIn);
+		if(debug) myVol.show("myVol");
 		
 		Grid3D gradX, gradY, gradZ;
 		
 		for (int i = 0; i < iter; ++i) {
+			System.out.println("iteration " + i);
+
 			
 			if (stepsize < Math.pow(10, -9))
 				break;
@@ -59,15 +64,26 @@ public class GDTest {
 			gradX = GridOp.sub(myVol, myVol, -1, 0, 0, offsetLeft);
 			gradY = GridOp.sub(myVol, myVol, 0, -1, 0, offsetLeft);
 			gradZ = GridOp.sub(myVol, myVol, 0, 0, -1, offsetLeft);
+			if(debug) {
+				gradX.show("gradX offsetLeft iter " + i);
+				gradY.show("gradY offsetLeft iter " + i);
+				gradZ.show("gradZ offsetLeft iter " + i);
+			}
+
 			
 			int numNegVol = GridOp.numNeg(myVol);
+			System.out.println("negative numbers " + numNegVol);
 			
 			// gradMagnitude = sqrt(sum(G.^2,4) + regularization.^2)
 			Grid3D gradMag = GridOp.add(GridOp.square(gradX),
 					GridOp.square(gradY), GridOp.square(gradZ), regul * regul);
 			GridOp.sqrtInPlace(gradMag);
+			if(debug) gradMag.show("gradMag iter " + i);
+
 
 			double tvNorm = GridOp.l1Norm(gradMag);
+			System.out.println("tvNorm " + tvNorm);
+
 		
 			// upd = divergence(G ./ gradMagnitude) * stepsize;
 			// volN = myVol + upd
@@ -76,6 +92,11 @@ public class GDTest {
 			GridOp.divInPlace(gradX, gradMag);
 			GridOp.divInPlace(gradY, gradMag);
 			GridOp.divInPlace(gradZ, gradMag);
+			if(debug) {
+				gradX.show("gradX normalized iter " + i);
+				gradY.show("gradY normalized iter " + i);
+				gradZ.show("gradZ normalized iter " + i);
+			}
 			
 			offsetLeft = false; // offsetRight
 			Grid3D gradXTmp = GridOp.sub(gradX, gradX, 1, 0, 0, offsetLeft);
@@ -84,9 +105,7 @@ public class GDTest {
 			//float[][][] b = gradXTmp.getBuffer();
 			for(int e=0; e<gradXTmp.getSize()[1]; ++e)
 				for(int f=0; f<gradXTmp.getSize()[2]; ++f)
-					gradXTmp.setAtIndex(0,e,f, gradX.getAtIndex(0,e,f));
-			
-			
+					gradXTmp.setAtIndex(0,e,f, gradX.getAtIndex(0,e,f));	
 			for(int e=0; e<gradXTmp.getSize()[1]; ++e)
 				for(int f=0; f<gradXTmp.getSize()[2]; ++f)
 					gradXTmp.setAtIndex(gradXTmp.getSize()[0]-1,e,f, -gradX.getAtIndex(gradXTmp.getSize()[0]-2,e,f));
@@ -116,11 +135,20 @@ public class GDTest {
 			gradX = gradXTmp;
 			gradY = gradYTmp;
 			gradZ = gradZTmp;
+			if(debug) {
+				gradX.show("gradX offsetRight iter " + i);
+				gradY.show("gradY offsetRight iter " + i);
+				gradZ.show("gradZ offsetRight iter " + i);
+			}
 						
 			Grid3D upd = GridOp.add(gradX, gradY, gradZ); // divergence
+			if(debug) upd.show("upd iter " + i);
+
 			
 			GridOp.mulInPlace(upd, stepsize);
 			Grid3D volN = GridOp.add(myVol, upd);
+			if(debug) volN.show("volN iter " + i);
+
 			
 			for(int ii=0; 0 == ii || (reduceStepsizeAndUpdate && ii<GD_STEPSIZE_MAXITER) ; ++ii){
 				int numNegVolN = GridOp.numNeg(volN);

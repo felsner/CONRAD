@@ -28,7 +28,7 @@ public class SliceParallelVolumePhantomRenderer extends StreamingPhantomRenderer
 			modelWorker.copyInternalElementsTo(workers[i]);
 		}
 		ParallelThreadExecutor executor = new ParallelThreadExecutor(workers);
-		executor.setShowStatus(false);
+		executor.setShowStatus(true);
 		try {
 			executor.execute();
 		} catch (InterruptedException e) {

@@ -40,12 +40,16 @@ public class SelectableEnergyMonochromaticAbsorptionModelWithNoise extends
 	@Override
 	public double evaluateLineIntegral(ArrayList<PhysicalObject> segments) {
 		double lineIntegral = super.evaluateLineIntegral(segments);
+//		if(lineIntegral != 0.0) 
+//			System.out.println("test lineIntegral " + lineIntegral);
 		double photonsAfterAbsorption = photonNumber * Math.exp(-lineIntegral);
 		double withNoise = StatisticsUtil.poissonRandomNumber(photonsAfterAbsorption);
 		double lineIntegralWithNoise = -Math.log(withNoise/photonNumber);
 		if (Double.isInfinite(lineIntegralWithNoise)) lineIntegralWithNoise = CONRAD.BIG_VALUE;
 		return lineIntegralWithNoise;
 	}
+	
+
 	
 	public void setPhotonNumber(double photonNumber) {
 		this.photonNumber = photonNumber;

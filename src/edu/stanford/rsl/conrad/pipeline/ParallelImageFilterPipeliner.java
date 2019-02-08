@@ -24,7 +24,7 @@ public class ParallelImageFilterPipeliner {
 	private ProjectionSource source;
 	private ImageFilteringTool [] tools;
 	private BufferedProjectionSink sink;
-	private boolean debug = false;
+	private boolean debug = true;
 
 	/**
 	 * Constructor requires an ImagePlus. If it has multiple slices the processing is performed in parallel.

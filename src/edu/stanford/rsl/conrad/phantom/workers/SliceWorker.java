@@ -21,7 +21,7 @@ public abstract class SliceWorker implements NamedParallelizableRunnable, Clonea
 	private Iterator<Integer> sliceList;
 	protected ImageGridBuffer imageBuffer;
 	private boolean configured = false;
-	protected boolean showStatus = true;
+	protected boolean showStatus = false;
 
 
 	@Override

@@ -24,7 +24,7 @@ public class ParallelThreadExecutor {
 
 	private boolean showStatus;
 	ParallelizableRunnable [] runnables;
-	boolean debug = false;
+	boolean debug = true;
 	private CountDownLatch latch;
 	public static boolean parallel = true;
 

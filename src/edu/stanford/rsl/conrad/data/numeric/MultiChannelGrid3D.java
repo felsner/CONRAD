@@ -24,6 +24,11 @@ public class MultiChannelGrid3D extends Grid3D {
 		multichannelData = new Grid4D(width, height, depth, channels);
 		buffer = multichannelData.getSubGrid(0).getBuffer();
 		//this(width, height, depth, true);
+
+		// Lina
+		this.size = new int[] { width, height, depth};
+		this.spacing = new double[] {1,1,1};
+		this.origin = new double[] {0,0,0};
 	}
 	
 	/**

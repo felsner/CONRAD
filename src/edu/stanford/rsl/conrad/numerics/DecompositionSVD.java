@@ -89,21 +89,20 @@ public class DecompositionSVD implements java.io.Serializable {
 	 * 
 	 */
 
-	public DecompositionSVD (SimpleMatrix Arg, boolean thin, boolean wantu,
-			boolean wantv) {
+	public DecompositionSVD (SimpleMatrix Arg, boolean thin, boolean wantu, boolean wantv) {
 
 		// Derived from LINPACK code.
 		// Initialize.
 		double[][] A = Arg.copyAsDoubleArray();
 		m = Arg.getRows();
 		n = Arg.getCols();
-		System.out.println("rows " + m + " cols " + n);
+		// System.out.println("rows " + m + " cols " + n);
 		this.thin = thin;
 
 		ncu = thin?Math.min(m,n):m;
-		System.out.println("ncu " + ncu);
+		// System.out.println("ncu " + ncu);
 		s = new double [Math.min(m+1,n)];
-		System.out.println("s " + s);
+		// System.out.println("s " + s);
 		if (wantu) U = new double [m][ncu];
 		if (wantv) V = new double [n][n];
 		double[] e = new double [n];

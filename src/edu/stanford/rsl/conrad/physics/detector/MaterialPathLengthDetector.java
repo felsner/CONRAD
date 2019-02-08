@@ -32,7 +32,7 @@ public class MaterialPathLengthDetector extends XRayDetector {
 
 	@Override
 	public void configure() throws Exception {
-		numberOfMaterials = UserUtil.queryInt("SelectNumber of Recorded Materials:", numberOfMaterials);
+	//	numberOfMaterials = UserUtil.queryInt("SelectNumber of Recorded Materials:", numberOfMaterials);
 		materialChannelMap = new HashMap<Material, Integer>();
 		names = new String[numberOfMaterials];
 		configured = true;

@@ -5,6 +5,7 @@ import java.awt.Color;
 import edu.stanford.rsl.conrad.data.numeric.Grid2D;
 import edu.stanford.rsl.conrad.data.numeric.Grid3D;
 import edu.stanford.rsl.conrad.data.numeric.MultiChannelGrid2D;
+import edu.stanford.rsl.conrad.data.numeric.MultiChannelGrid3D;
 import edu.stanford.rsl.conrad.fitting.Function;
 import edu.stanford.rsl.conrad.fitting.LinearFunction;
 import edu.stanford.rsl.conrad.geometry.shapes.simple.PointND;

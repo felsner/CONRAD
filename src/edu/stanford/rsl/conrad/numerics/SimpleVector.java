@@ -437,8 +437,21 @@ public class SimpleVector implements Serializable {
 		this.divideBy(this.normL2());
 	}
 	
+	public void normalizeL1() {
+		this.divideBy(this.norm(VectorNormType.VEC_NORM_L1));
+	}
+	
 	public SimpleVector normalizedL2() {
 		return this.dividedBy(this.normL2());
+	}
+	
+	public double rmse() {
+		double result = 0.0;
+	
+		for (int i = 0; i < this.len; ++i)
+			result += this.buf[i]*this.buf[i];
+		
+		return Math.sqrt(result /this.len );
 	}
 
 
@@ -460,7 +473,8 @@ public class SimpleVector implements Serializable {
 		result += "[";
 		for (int i = 0; i < this.len; ++i) {
 			if (i != 0) result += "; ";
-			result += new Double(this.buf[i]);
+		//	result += new Double(this.buf[i]);
+			result += String.format("%.2f", this.buf[i]); //Lina 16.10.18
 		}
 		result += "]";
 		return result;

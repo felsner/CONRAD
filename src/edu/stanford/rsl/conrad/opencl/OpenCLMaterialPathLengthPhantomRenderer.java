@@ -94,7 +94,9 @@ public class OpenCLMaterialPathLengthPhantomRenderer extends OpenCLProjectionPha
 
 	@Override
 	public void configure() throws Exception{
-		AnalyticPhantom phantom = AnalyticPhantom.getCurrentPhantom();
+		AnalyticPhantom phantom = this.phantom; // changed by Lina 13.08.18
+		if(phantom == null)
+			phantom = AnalyticPhantom.getCurrentPhantom();
 		CLContext context = OpenCLUtil.createContext();
 		CLDevice device = context.getMaxFlopsDevice();
 

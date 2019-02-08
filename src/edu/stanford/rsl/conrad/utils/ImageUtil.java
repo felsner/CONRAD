@@ -94,6 +94,44 @@ public abstract class ImageUtil {
 		} else 
 			return null;
 	}
+	
+	/*
+	public static ImagePlus wrapGrid4D(MultiChannelGrid3D grid, String title){
+		if (grid != null) {						
+				ImageStack stack = new ImageStack(grid.getSize()[0], grid.getSize()[1], grid.getSize()[2]);
+				MultiChannelGrid3D first = (MultiChannelGrid3D) grid.getSubGrid(0);
+				String [] names = first.getChannelNames();
+				// finalize the hyperstack
+				ImagePlus hyper = new ImagePlus();
+				ImageStack hyperStack = new ImageStack(grid.getSize()[0], grid.getSize()[1]);
+				int dimz = grid.getSize()[2];
+				int dimy=  grid.getSize()[1];
+				for (int c=0;c < first.getNumberOfChannels(); c++){
+					for (int i=0; i< dimz; i++){
+						for(int j=0; j<dimy; j++){
+						MultiChannelGrid3D current = (MultiChannelGrid3D) grid.getSubGrid(i);
+						String frameTitle = "Slice z = " +(i-1);
+						if (names != null){
+							frameTitle += " Channel: " + names[c]; 
+						} else {
+							frameTitle += " Channel: " + c;
+						}
+						hyperStack.addSlice(frameTitle, ImageUtil.wrapGrid2D(current.getChannel(c).getSubGrid(j)));
+					}
+				}
+				}
+				setCalibrationToImagePlus(hyper);
+				hyper.setStack(title, hyperStack);
+				hyper.setDimensions(1, dimz, first.getNumberOfChannels());
+				hyper.setOpenAsHyperStack(true);
+				return hyper;
+			
+
+		} else 
+			return null;
+	}
+	*/
+	
 	public static ImagePlus wrapGrid4D(Grid4D grid, String title){
 		if (grid != null) {						
 			if (grid.getSubGrid(0) instanceof MultiChannelGrid3D){

@@ -39,7 +39,8 @@ public class HelicalTrajectory extends CircularTrajectory {
 	
 	public void setTrajectory(int numProjectionMatrices, double sourceToAxisDistance, double averageAngularIncrement, 
 			double detectorOffsetX, double detectorOffsetY, CameraAxisDirection uDirection, 
-			CameraAxisDirection vDirection, SimpleVector rotationAxis, PointND rotationCenter, double angleFirstProjection, double helixIncrement) {
+			CameraAxisDirection vDirection, SimpleVector rotationAxis, PointND rotationCenter, double angleFirstProjection, 
+			double helixIncrement) {
 		//TODO: Add a parameter for the angle of the first projection. (E.g., this might be -100� instead of the currently defaulted 0�.)
 		this.projectionMatrices = new Projection[numProjectionMatrices];
 		this.primaryAngles = new double[numProjectionMatrices];

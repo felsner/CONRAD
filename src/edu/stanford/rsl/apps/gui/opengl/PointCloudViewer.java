@@ -33,11 +33,16 @@ public class PointCloudViewer extends OpenGLViewer {
 			PointND newP = new PointND(p.getAbstractVector().clone());
 			newP.getAbstractVector().subtract(center.getAbstractVector());
 			this.points.add(newP);
+			if(newP.getAbstractVector().getLen() == 3)
 			for (int i=0;i<3;i++){
 				if (Math.abs(newP.get(i)) > max){
 					max = Math.abs(newP.get(i));
 				}
 			}
+			else if(newP.getAbstractVector().getLen() == 4)
+				if (Math.abs(newP.get(3)) > max){
+					max = Math.abs(newP.get(3));
+				}
 		}
 		for(PointND p: this.points){
 			p.getAbstractVector().divideBy(max);

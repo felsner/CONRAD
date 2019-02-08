@@ -42,6 +42,16 @@ public class Box extends SimpleSurface {
 		this();
 		init((new PointND(0,0,0)),dx, dy, dz);
 	}
+	
+	public Box(double dx, double dy, double dz, PointND center){
+		this();
+		//if center ! 3
+		if(center.getDimension() != 3) {
+			init((new PointND(0,0,0)),dx, dy, dz);
+			System.err.println("standard center point (0,0,0) is used");
+		}
+		else init(center, dx, dy, dz);
+	}
 
 	public Box(Box b){
 		super(b);

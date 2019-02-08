@@ -286,7 +286,9 @@ public class FanBeamBackprojector2D {
 					// We use PointND for points in 3D space and SimpleVector for directions.
 					final PointND reconstructionPointWorld = new PointND(wx, wy, 0.d);
 
-					final StraightLine projectionLine = new StraightLine(a, reconstructionPointWorld);
+				//	final StraightLine projectionLine = new StraightLine(a, reconstructionPointWorld);
+					final StraightLine projectionLine = new StraightLine(reconstructionPointWorld, a);
+
 					final PointND detectorPixel = projectionLine.intersect(detectorLine);
 					
 					float valtemp;

@@ -87,8 +87,9 @@ public abstract class StreamingPhantomRenderer extends PhantomRenderer {
 		init();
 		Grid2D proc  = null;
 		if (projectionNumber < dimz -1) {
-			projectionNumber ++;
+			
 			while (proc == null){
+				projectionNumber ++;
 				proc = buffer.get(projectionNumber);
 			}
 			buffer.remove(projectionNumber);

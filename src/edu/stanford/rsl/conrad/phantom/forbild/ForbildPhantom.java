@@ -38,8 +38,11 @@ public class ForbildPhantom extends AnalyticPhantom {
 		super.configure();
 		if(!isConfigured){
 			File file = new File(FileUtil.myFileChoose(".pha", false));	
+			//TODO change me back to phantom selection
 			
 			//File file = new File(System.getProperty("user.dir")+"/data/configfiles/forbild/ThoraxPhantom.pha");
+			//File file = new File("/localhome/lina/Documents/Reconstruction/CONRAD/data/configfiles/forbild/HeadPhantomSimple.pha");
+
 			addAll(new ForbildParser(file).getScene());
 		}
 
